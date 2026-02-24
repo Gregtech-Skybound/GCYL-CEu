@@ -4,9 +4,11 @@ import gregicality.multiblocks.api.fluids.GCYMFluidStorageKeys;
 import gregtech.api.GTValues;
 import gregtech.api.fluids.store.FluidStorageKeys;
 import gregtech.api.metatileentity.multiblock.CleanroomType;
+import gregtech.api.recipes.GTRecipeHandler;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.chance.output.ChancedOutputLogic;
 import gregtech.api.recipes.ingredients.IntCircuitIngredient;
+import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.stack.UnificationEntry;
 import net.minecraft.init.Blocks;
@@ -39,6 +41,16 @@ highTierVoltageCoils();
 
         //TODO: FINISH NUCLEAR AND REMOVE
         temporaryNuclearRecipes();
+
+        // LV Superconductor with reasonable time
+        GTRecipeHandler.removeRecipesByInputs(BLAST_RECIPES, OreDictUnifier.get(dust, LVSuperconductorBase));
+        BLAST_RECIPES.recipeBuilder()
+               .input(dust, LVSuperconductorBase)
+               .output(ingot, LVSuperconductorBase)
+               .duration(1200)
+               .EUt(120)
+               .blastFurnaceTemp(1000)
+               .buildAndRegister();
 
         //eglin steel dust and base dust
         MIXER_RECIPES.recipeBuilder().duration(20 * 10).EUt(120)
