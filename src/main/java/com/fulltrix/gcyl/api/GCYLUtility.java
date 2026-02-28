@@ -661,6 +661,26 @@ public class GCYLUtility {
         };
     }
 
+    public static Material getPlateByTier(int tier) {
+        return switch (tier) {
+            case(1) -> Steel;
+            case(2) -> Aluminium;
+            case(3) -> StainlessSteel;
+            case(4) -> Titanium;
+            case(5) -> TungstenSteel;
+            case(6) -> RhodiumPlatedPalladium;
+            case(7) -> Duranium;
+            case(8) -> Tritanium;
+            case(9) -> Seaborgium;
+            case(10) -> Bohrium;
+            case(11) -> Quantum;
+            case(12) -> BlackTitanium;
+            case(13) -> HeavyQuarkDegenerateMatter;
+            case(14) -> Neutronium;
+            default -> Lead;
+        };
+    }
+
     public static List<RecipeBuilder<?>> buildHigherYieldCleanroomRecipes(RecipeMap<?> recipeMap, MetaItem<?>.MetaValueItem output, int baseOutputAmount, int startCleanRoomTier, int startEUt) {
         List<RecipeBuilder<?>> recipeBuilderList = new ArrayList<>();
 

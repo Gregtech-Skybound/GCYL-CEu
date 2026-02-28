@@ -6,10 +6,12 @@ import com.fulltrix.gcyl.blocks.component_al.GCYLComponentALCasing;
 import com.fulltrix.gcyl.blocks.metal.GCYLCleanroomCasing;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.multiblock.CleanroomType;
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.common.blocks.BlockCleanroomCasing;
 import gregtech.common.blocks.MetaBlocks;
+import gregtech.loaders.recipe.CraftingComponent;
 import net.minecraft.item.ItemStack;
 
 import static com.fulltrix.gcyl.api.GCYLUtility.*;
@@ -27,6 +29,10 @@ import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.*;
 import static gregtech.common.items.MetaItems.*;
 import static gregtech.common.metatileentities.MetaTileEntities.*;
+import static gregtech.common.metatileentities.MetaTileEntities.HULL;
+import static gregtech.common.metatileentities.MetaTileEntities.TRANSFORMER;
+import static gregtech.loaders.recipe.CraftingComponent.*;
+import static gregtech.loaders.recipe.MetaTileEntityLoader.registerMachineRecipe;
 
 public class MultiblockPartCraftingRecipes {
     public static void init() {
@@ -39,47 +45,64 @@ public class MultiblockPartCraftingRecipes {
         otherHatches();
         componentALCasings();
         energyHatchCorrections();
+        uhvPlusTransformers();
+    }
+
+    private static void uhvPlusTransformers() {
+
+        for (int i = 9; i < 14; i++) {
+
+            ModHandler.addShapedRecipe("transformer_" + VN[i], TRANSFORMER[i].getStackForm(),"WCC",
+                    "TH ", "WCC", 'W', POWER_COMPONENT.getIngredient(i), 'C', CABLE.getIngredient(i), 'T', CABLE_TIER_UP.getIngredient(i), 'H', HULL[i].getStackForm());
+
+            ModHandler.addShapedRecipe("hi_amp_transformer_" + VN[i], HI_AMP_TRANSFORMER[i].getStackForm(),"WCC", "TH ", "WCC",
+                    'W', CraftingComponent.VOLTAGE_COIL.getIngredient(i), 'C', CraftingComponent.CABLE_QUAD.getIngredient(i), 'T', CraftingComponent.CABLE_QUAD_TIER_UP.getIngredient(i), 'H', CraftingComponent.TRANSFORMER.getIngredient(i));
+        }
     }
 
     //TODO: finish the rest of these
     private static void energyHatchCorrections() {
-        //UHV 4A Input
         removeRecipesByInputs(ASSEMBLER_RECIPES, ENERGY_INPUT_HATCH[UHV].getStackForm(), OreDictUnifier.get(wireGtQuadruple, Europium, 2), OreDictUnifier.get(plate, Neutronium, 2));
-        ASSEMBLER_RECIPES.recipeBuilder()
-                .input(ENERGY_INPUT_HATCH[UHV])
-                .input(wireGtQuadruple, Europium, 2)
-                .input(plate, Seaborgium, 2)
-                .output(ENERGY_INPUT_HATCH_4A[UHV])
-                .duration(100).EUt(VA[UV]).buildAndRegister();
-
-        //UHV 16A Input
-        removeRecipesByInputs(ASSEMBLER_RECIPES, HI_AMP_TRANSFORMER[UV].getStackForm(), ENERGY_INPUT_HATCH_4A[5].getStackForm(2), OreDictUnifier.get(wireGtOctal, Europium, 2), OreDictUnifier.get(plate, Neutronium, 4));
-        ASSEMBLER_RECIPES.recipeBuilder()
-                .input(HI_AMP_TRANSFORMER[UV])
-                .input(ENERGY_INPUT_HATCH_4A[5], 2)
-                .input(wireGtOctal, Europium, 2)
-                .input(plate, Seaborgium, 4)
-                .output(ENERGY_INPUT_HATCH_16A[UHV])
-                .duration(200).EUt(VA[UV]).buildAndRegister();
-
-        //UHV 4A Output
+        removeRecipesByInputs(ASSEMBLER_RECIPES, HI_AMP_TRANSFORMER[UV].getStackForm(), ENERGY_INPUT_HATCH_4A[UHV].getStackForm(2), OreDictUnifier.get(wireGtOctal, Europium, 2), OreDictUnifier.get(plate, Neutronium, 4));
         removeRecipesByInputs(ASSEMBLER_RECIPES, ENERGY_OUTPUT_HATCH[UHV].getStackForm(), OreDictUnifier.get(wireGtQuadruple, Europium, 2), OreDictUnifier.get(plate, Neutronium, 2));
-        ASSEMBLER_RECIPES.recipeBuilder()
-                .input(ENERGY_OUTPUT_HATCH[UHV])
-                .input(wireGtQuadruple, Europium, 2)
-                .input(plate, Seaborgium, 2)
-                .output(ENERGY_OUTPUT_HATCH_4A[UHV])
-                .duration(100).EUt(VA[UV]).buildAndRegister();
+        removeRecipesByInputs(ASSEMBLER_RECIPES, HI_AMP_TRANSFORMER[UV].getStackForm(), ENERGY_OUTPUT_HATCH_4A[UHV].getStackForm(2), OreDictUnifier.get(wireGtOctal, Europium, 2), OreDictUnifier.get(plate, Neutronium, 4));
 
-        //UHV 16A Input
-        removeRecipesByInputs(ASSEMBLER_RECIPES, HI_AMP_TRANSFORMER[UV].getStackForm(), ENERGY_OUTPUT_HATCH_4A[5].getStackForm(2), OreDictUnifier.get(wireGtOctal, Europium, 2), OreDictUnifier.get(plate, Neutronium, 4));
-        ASSEMBLER_RECIPES.recipeBuilder()
-                .input(HI_AMP_TRANSFORMER[UV])
-                .input(ENERGY_OUTPUT_HATCH_4A[5], 2)
-                .input(wireGtOctal, Europium, 2)
-                .input(plate, Seaborgium, 4)
-                .output(ENERGY_OUTPUT_HATCH_16A[UHV])
-                .duration(200).EUt(VA[UV]).buildAndRegister();
+
+        for (int i = 9; i < 14; i++) {
+            //4A Input
+            ASSEMBLER_RECIPES.recipeBuilder()
+                    .input(ENERGY_INPUT_HATCH[i])
+                    .input(cableGtQuadruple, getCableByTier(i), 2)
+                    .input(plate, getPlateByTier(i), 2)
+                    .output(ENERGY_INPUT_HATCH_4A[i])
+                    .duration(100).EUt(VA[i-1]).buildAndRegister();
+
+            //16A Input
+            ASSEMBLER_RECIPES.recipeBuilder()
+                    .input(HI_AMP_TRANSFORMER[i-1])
+                    .input(ENERGY_INPUT_HATCH_4A[i], 2)
+                    .input(wireGtOctal, getCableByTier(i), 2)
+                    .input(plate, getPlateByTier(i), 4)
+                    .output(ENERGY_INPUT_HATCH_16A[i])
+                    .duration(200).EUt(VA[i-1]).buildAndRegister();
+
+            //4A Output
+            ASSEMBLER_RECIPES.recipeBuilder()
+                    .input(ENERGY_OUTPUT_HATCH[i])
+                    .input(wireGtQuadruple, getCableByTier(i), 2)
+                    .input(plate, getPlateByTier(i), 2)
+                    .output(ENERGY_OUTPUT_HATCH_4A[i])
+                    .duration(100).EUt(VA[i-1]).buildAndRegister();
+
+            //16A Output
+            ASSEMBLER_RECIPES.recipeBuilder()
+                    .input(HI_AMP_TRANSFORMER[i-1])
+                    .input(ENERGY_OUTPUT_HATCH_4A[i], 2)
+                    .input(wireGtOctal, getCableByTier(i), 2)
+                    .input(plate, getPlateByTier(i), 4)
+                    .output(ENERGY_OUTPUT_HATCH_16A[i])
+                    .duration(200).EUt(VA[i-1]).buildAndRegister();
+        }
     }
 
     private static void componentALCasings() {
