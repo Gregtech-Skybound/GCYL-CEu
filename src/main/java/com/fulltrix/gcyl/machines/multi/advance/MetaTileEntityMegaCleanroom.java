@@ -8,6 +8,7 @@ import com.fulltrix.gcyl.api.multi.GCYLCleanroomType;
 import com.fulltrix.gcyl.blocks.GCYLMetaBlocks;
 import com.fulltrix.gcyl.blocks.metal.GCYLCleanroomCasing;
 import com.fulltrix.gcyl.machines.GCYLTileEntities;
+import com.fulltrix.gcyl.mixin.MetaTileEntityCleanroomAccessor;
 import gregtech.api.GTValues;
 import gregtech.api.block.ICleanroomFilter;
 import gregtech.api.capability.GregtechDataCodes;
@@ -349,21 +350,7 @@ public class MetaTileEntityMegaCleanroom extends MetaTileEntityCleanroom  implem
                 .addEnergyUsageLine(this.energyContainer)
                 .addCustom((keyManager, uiSyncer) -> {
                     if (uiSyncer.syncBoolean(this.isStructureFormed())) {
-                        //TODO get rid of this disgusting garbage
-                        Field cleanAmountField;
-                        try {
-                            cleanAmountField = MetaTileEntityCleanroom.class.getDeclaredField("cleanAmount");
-                        } catch (NoSuchFieldException e) {
-                            throw new RuntimeException(e);
-                        }
-                        cleanAmountField.setAccessible(true);
-
-                        int cleanAmount = 0;
-                        try {
-                            cleanAmount = (int) cleanAmountField.get(this);
-                        } catch (IllegalAccessException e) {
-                            throw new RuntimeException(e);
-                        }
+                        int cleanAmount = ((MetaTileEntityCleanroomAccessor) this).getCleanAmount();
 
                         IKey cleanState;
                         if (this.isClean()) {
