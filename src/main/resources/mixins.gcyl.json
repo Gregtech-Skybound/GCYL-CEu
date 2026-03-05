@@ -8,7 +8,8 @@
     "MetaTileEntityHolderMixin",
     "MixinProspectorScannerBehavior",
     "MixinTricorderBehavior",
-    "MixinSteamMetaTileEntity"
+    "MixinSteamMetaTileEntity",
+    "MetaTileEntityCleanroomAccessor"
   ],
   "client": [],
   "server": []
