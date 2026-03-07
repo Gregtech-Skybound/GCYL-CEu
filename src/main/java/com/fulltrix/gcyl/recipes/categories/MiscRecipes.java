@@ -81,7 +81,6 @@ highTierVoltageCoils();
                 .input(ELECTRIC_PISTON_HV)
                 .fluidInputs(Polyethylene.getFluid(L * 2))
                 .output(COVER_ENDER_ITEM_LINK)
-                .circuitMeta(1)
                 .EUt(VA[HV]).duration(320)
                 .buildAndRegister();
 
