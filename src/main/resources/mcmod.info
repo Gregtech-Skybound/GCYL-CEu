@@ -1,5 +1,5 @@
 [
-{
+  {
   "modid": "gcyl",
   "name": "GCYL: CEu",
   "description": "Port of Gregicality to CEu with reference to the Technological Journey fork",
@@ -12,5 +12,55 @@
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
-}
+  },
+  {
+    "modid": "gcym",
+    "name": "Gregicality Multiblocks",
+    "description": "Multiblock Machines module of Gregicality.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "authorList": [
+      "TechLord22"
+    ],
+    "credits": "GregoriusT for making GregTech and textures, various GT community members and the Gregtech CEu Dev Team for help in development.",
+    "dependencies": ["codechickenlib", "gregtech"],
+    "parent": "gcyl"
+  },
+  {
+    "modid": "supercritical",
+    "name": "Supercritical",
+    "description": "(1.12) Adding fission reactor and atomic energy to GregTech CE Unofficial",
+    "version": "0.0.2",
+    "mcversion": "1.12.2",
+    "logoFile": "assets/supercritical/textures/supercritical_logo.png",
+    "url": "https://github.com/SymmetricDevs/Supercritical",
+    "authorList": [
+      "SymmetricDevs"
+    ],
+    "credits": "",
+    "dependencies": [
+      "gregtech",
+      "mixinbooter"
+    ],
+    "parent": "gcyl"
+  },
+  {
+    "modid": "materialreplication",
+    "name": "Material Replication",
+    "description": "Add matter system for GTCEu.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://www.curseforge.com/minecraft/mc-mods/material-replication",
+    "updateUrl": "",
+    "authorList": ["MrKono"],
+    "credits": "",
+    "logoFile": "assets/materialreplication/textures/logo.png",
+    "screenshots": [],
+    "dependencies": [
+      "chickenchunks",
+      "gregtech",
+      "gcym"
+    ],
+    "parent": "gcyl"
+  }
 ]
